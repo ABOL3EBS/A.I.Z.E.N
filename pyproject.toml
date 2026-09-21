@@ -40,9 +40,6 @@ packages = ["core/aizen"]
 [tool.hatch.build.targets.wheel.force-include]
 "core/aizen/config" = "aizen/config"
 
-[tool.hatch.build.targets.wheel]
-packages = ["core/aizen"]
-
 [tool.ruff]
 line-length = 100
 target-version = "py312"

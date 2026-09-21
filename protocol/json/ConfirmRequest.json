@@ -1,0 +1,73 @@
+{
+  "properties": {
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    },
+    "call_id": {
+      "title": "Call Id",
+      "type": "string"
+    },
+    "tool": {
+      "title": "Tool",
+      "type": "string"
+    },
+    "tier": {
+      "title": "Tier",
+      "type": "string"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "preview": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Preview"
+    },
+    "args_hash": {
+      "title": "Args Hash",
+      "type": "string"
+    },
+    "tainted": {
+      "default": false,
+      "title": "Tainted",
+      "type": "boolean"
+    },
+    "taint_sources": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Taint Sources",
+      "type": "array"
+    },
+    "expires_at": {
+      "title": "Expires At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "turn_id",
+    "call_id",
+    "tool",
+    "tier",
+    "summary",
+    "args_hash",
+    "expires_at"
+  ],
+  "title": "ConfirmRequest",
+  "type": "object"
+}

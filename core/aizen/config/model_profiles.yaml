@@ -1,0 +1,43 @@
+# Model profiles (see aizen-architecture-v2.md section 4).
+# Profiles are config, not code. Selection rule: start at the lightest profile,
+# run the routing eval, keep it if it passes, otherwise step up one tier.
+default: light
+
+profiles:
+  tiny:
+    class: "~1-2B"
+    approx_ram_gb: 1.5
+    use: "Fastest; likely fine for chat and explaining structured results, risky for tool use."
+    model: "qwen3:1.7b"
+    num_ctx: 4096
+    keep_alive: "30m"
+    temperature: 0.1
+    embed_model: "nomic-embed-text"
+  light:
+    class: "~3-4B"
+    approx_ram_gb: 3.0
+    use: "Default target: the smallest size with dependable tool calling."
+    model: "qwen3:4b"
+    num_ctx: 8192
+    keep_alive: "30m"
+    temperature: 0.1
+    embed_model: "nomic-embed-text"
+  standard:
+    class: "~7-9B"
+    approx_ram_gb: 5.5
+    use: "Fallback if `light` fails the eval gate."
+    model: "qwen3:8b"
+    num_ctx: 8192
+    keep_alive: "30m"
+    temperature: 0.1
+    embed_model: "nomic-embed-text"
+  remote:
+    class: "any"
+    approx_ram_gb: 0
+    use: "Optional cloud learning track; reached via a private tunnel, never a public port."
+    model: "qwen3:8b"
+    num_ctx: 8192
+    keep_alive: "5m"
+    temperature: 0.1
+    embed_model: "nomic-embed-text"
+    base_url: null

@@ -1,0 +1,64 @@
+# Pre-router rules (see aizen-architecture-v2.md section 5.2).
+# Each rule is a list of regex patterns; the router scores every rule against
+# the utterance and picks the highest-scoring domain (ties -> ambiguous).
+# Patterns are covered by the routing eval, so they improve with data.
+#
+# Ordering matters: this file is the first-match scoreboard, finance first.
+
+rules:
+  - domain: finance
+    patterns:
+      - "spent"
+      - "spend"
+      - "balance"
+      - "afford"
+      - "budget"
+      - "transaction"
+      - "paycheck"
+      - "income"
+      - "expense"
+      - "how much (did|do|have) i"
+      - "how much money"
+      - "how much is"
+      - "my balance"
+      - "my account"
+      - "my budget"
+      - "calculate"
+      - "bank"
+      - "account"
+    examples:
+      - "What did I spend in March?"
+      - "What's my current balance?"
+
+  - domain: personal
+    patterns:
+      - "what did i write"
+      - "what have i written"
+      - "my notes"
+      - "notes about"
+      - "recall"
+      - "remember"
+      - "write about"
+      - "wrote about"
+      - "that file"
+      - "my document"
+      - "project"
+    examples:
+      - "What did I write about the prototype?"
+      - "Do you remember my coffee preference?"
+
+  - domain: web
+    patterns:
+      - "search( the web)?"
+      - "the latest"
+      - "latest version"
+      - "news"
+      - "what is"
+      - "who is"
+      - "weather"
+      - "online"
+      - "on the web"
+      - "internet"
+    examples:
+      - "What's the latest version of FastAPI?"
+      - "What is the weather in Munich?"

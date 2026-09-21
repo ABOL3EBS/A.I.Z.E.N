@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Url"
+    },
+    "path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Path"
+    },
+    "snippet": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Snippet"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "title": "SourceRef",
+  "type": "object"
+}

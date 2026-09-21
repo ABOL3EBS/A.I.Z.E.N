@@ -1,0 +1,71 @@
+{
+  "$defs": {
+    "Domain": {
+      "enum": [
+        "finance",
+        "personal",
+        "web",
+        "chat",
+        "system",
+        "ambiguous"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "Usage": {
+      "properties": {
+        "promptTokens": {
+          "default": 0,
+          "title": "Prompttokens",
+          "type": "integer"
+        },
+        "completionTokens": {
+          "default": 0,
+          "title": "Completiontokens",
+          "type": "integer"
+        }
+      },
+      "title": "Usage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "t": {
+      "const": "assistant_done",
+      "title": "T",
+      "type": "string"
+    },
+    "turnId": {
+      "title": "Turnid",
+      "type": "string"
+    },
+    "usage": {
+      "$ref": "#/$defs/Usage",
+      "default": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      }
+    },
+    "verified": {
+      "default": false,
+      "title": "Verified",
+      "type": "boolean"
+    },
+    "domain": {
+      "$ref": "#/$defs/Domain",
+      "default": "chat"
+    },
+    "tainted": {
+      "default": false,
+      "title": "Tainted",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "turnId",
+    "t"
+  ],
+  "title": "AssistantDoneEvent",
+  "type": "object"
+}

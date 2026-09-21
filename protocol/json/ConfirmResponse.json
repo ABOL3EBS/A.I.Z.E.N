@@ -1,0 +1,23 @@
+{
+  "properties": {
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "approve": {
+      "title": "Approve",
+      "type": "boolean"
+    },
+    "scope": {
+      "default": "once",
+      "title": "Scope",
+      "type": "string"
+    }
+  },
+  "required": [
+    "request_id",
+    "approve"
+  ],
+  "title": "ConfirmResponse",
+  "type": "object"
+}

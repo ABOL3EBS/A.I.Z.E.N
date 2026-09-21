@@ -1,0 +1,709 @@
+{
+  "$defs": {
+    "AssistantDeltaEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "assistant_delta",
+          "title": "T",
+          "type": "string"
+        },
+        "turnId": {
+          "title": "Turnid",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turnId",
+        "text",
+        "t"
+      ],
+      "title": "AssistantDeltaEvent",
+      "type": "object"
+    },
+    "AssistantDoneEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "assistant_done",
+          "title": "T",
+          "type": "string"
+        },
+        "turnId": {
+          "title": "Turnid",
+          "type": "string"
+        },
+        "usage": {
+          "$ref": "#/$defs/Usage",
+          "default": {
+            "promptTokens": 0,
+            "completionTokens": 0
+          }
+        },
+        "verified": {
+          "default": false,
+          "title": "Verified",
+          "type": "boolean"
+        },
+        "domain": {
+          "$ref": "#/$defs/Domain",
+          "default": "chat"
+        },
+        "tainted": {
+          "default": false,
+          "title": "Tainted",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "turnId",
+        "t"
+      ],
+      "title": "AssistantDoneEvent",
+      "type": "object"
+    },
+    "ConfirmRequestEvent": {
+      "additionalProperties": false,
+      "description": "\u00a728 confirmation, carried to the UI as the \u00a76.2 ``confirm_request``.",
+      "properties": {
+        "t": {
+          "const": "confirm_request",
+          "title": "T",
+          "type": "string"
+        },
+        "requestId": {
+          "title": "Requestid",
+          "type": "string"
+        },
+        "turnId": {
+          "title": "Turnid",
+          "type": "string"
+        },
+        "callId": {
+          "title": "Callid",
+          "type": "string"
+        },
+        "tool": {
+          "title": "Tool",
+          "type": "string"
+        },
+        "tier": {
+          "title": "Tier",
+          "type": "string"
+        },
+        "risk": {
+          "default": "network",
+          "enum": [
+            "write",
+            "exec",
+            "network"
+          ],
+          "title": "Risk",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "preview": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preview"
+        },
+        "argsHash": {
+          "title": "Argshash",
+          "type": "string"
+        },
+        "tainted": {
+          "default": false,
+          "title": "Tainted",
+          "type": "boolean"
+        },
+        "taintSources": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Taintsources",
+          "type": "array"
+        },
+        "expiresAt": {
+          "title": "Expiresat",
+          "type": "string"
+        }
+      },
+      "required": [
+        "requestId",
+        "turnId",
+        "callId",
+        "tool",
+        "tier",
+        "summary",
+        "argsHash",
+        "expiresAt",
+        "t"
+      ],
+      "title": "ConfirmRequestEvent",
+      "type": "object"
+    },
+    "Domain": {
+      "enum": [
+        "finance",
+        "personal",
+        "web",
+        "chat",
+        "system",
+        "ambiguous"
+      ],
+      "title": "Domain",
+      "type": "string"
+    },
+    "ErrorEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "error",
+          "title": "T",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "recoverable": {
+          "default": true,
+          "title": "Recoverable",
+          "type": "boolean"
+        },
+        "hint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hint"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "t"
+      ],
+      "title": "ErrorEvent",
+      "type": "object"
+    },
+    "IndexStatusEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "index_status",
+          "title": "T",
+          "type": "string"
+        },
+        "pending": {
+          "default": 0,
+          "title": "Pending",
+          "type": "integer"
+        },
+        "current": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Current"
+        }
+      },
+      "title": "IndexStatusEvent",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "ModelStatusEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "model_status",
+          "title": "T",
+          "type": "string"
+        },
+        "profile": {
+          "title": "Profile",
+          "type": "string"
+        },
+        "loaded": {
+          "default": false,
+          "title": "Loaded",
+          "type": "boolean"
+        },
+        "tokensPerSec": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tokenspersec"
+        },
+        "ramMb": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rammb"
+        }
+      },
+      "required": [
+        "profile",
+        "t"
+      ],
+      "title": "ModelStatusEvent",
+      "type": "object"
+    },
+    "OrbState": {
+      "enum": [
+        "IDLE",
+        "LISTENING",
+        "THINKING",
+        "SEARCHING",
+        "READING_FILE",
+        "CALCULATING",
+        "SPEAKING",
+        "ERROR"
+      ],
+      "title": "OrbState",
+      "type": "string"
+    },
+    "OrbStateEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "orb_state",
+          "title": "T",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/OrbState"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "state",
+        "t"
+      ],
+      "title": "OrbStateEvent",
+      "type": "object"
+    },
+    "Ping": {
+      "additionalProperties": false,
+      "description": "Transport heartbeat; the client answers with ``pong``.",
+      "properties": {
+        "t": {
+          "const": "ping",
+          "title": "T",
+          "type": "string"
+        }
+      },
+      "title": "Ping",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "RouteEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "route",
+          "title": "T",
+          "type": "string"
+        },
+        "domain": {
+          "$ref": "#/$defs/Domain"
+        },
+        "toolset": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Toolset",
+          "type": "array"
+        },
+        "hint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hint"
+        }
+      },
+      "required": [
+        "domain",
+        "t"
+      ],
+      "title": "RouteEvent",
+      "type": "object"
+    },
+    "SessionStateEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "session_state",
+          "title": "T",
+          "type": "string"
+        },
+        "state": {
+          "title": "State",
+          "type": "string"
+        },
+        "seq": {
+          "title": "Seq",
+          "type": "integer"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "state",
+        "seq",
+        "t"
+      ],
+      "title": "SessionStateEvent",
+      "type": "object"
+    },
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "snippet": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Snippet"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    },
+    "SourcesEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "sources",
+          "title": "T",
+          "type": "string"
+        },
+        "turnId": {
+          "title": "Turnid",
+          "type": "string"
+        },
+        "items": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "turnId",
+        "t"
+      ],
+      "title": "SourcesEvent",
+      "type": "object"
+    },
+    "ToolEndEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "tool_end",
+          "title": "T",
+          "type": "string"
+        },
+        "callId": {
+          "default": "",
+          "title": "Callid",
+          "type": "string"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "ms": {
+          "default": 0.0,
+          "title": "Ms",
+          "type": "number"
+        },
+        "summary": {
+          "default": "",
+          "title": "Summary",
+          "type": "string"
+        },
+        "tainted": {
+          "default": false,
+          "title": "Tainted",
+          "type": "boolean"
+        }
+      },
+      "title": "ToolEndEvent",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "ToolStartEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "tool_start",
+          "title": "T",
+          "type": "string"
+        },
+        "callId": {
+          "default": "",
+          "title": "Callid",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "argsSummary": {
+          "default": "",
+          "title": "Argssummary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "t"
+      ],
+      "title": "ToolStartEvent",
+      "type": "object"
+    },
+    "TranscriptFinalEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "transcript_final",
+          "title": "T",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "t"
+      ],
+      "title": "TranscriptFinalEvent",
+      "type": "object"
+    },
+    "TranscriptPartialEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "transcript_partial",
+          "title": "T",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "t"
+      ],
+      "title": "TranscriptPartialEvent",
+      "type": "object"
+    },
+    "Usage": {
+      "properties": {
+        "promptTokens": {
+          "default": 0,
+          "title": "Prompttokens",
+          "type": "integer"
+        },
+        "completionTokens": {
+          "default": 0,
+          "title": "Completiontokens",
+          "type": "integer"
+        }
+      },
+      "title": "Usage",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "assistant_delta": "#/$defs/AssistantDeltaEvent",
+      "assistant_done": "#/$defs/AssistantDoneEvent",
+      "confirm_request": "#/$defs/ConfirmRequestEvent",
+      "error": "#/$defs/ErrorEvent",
+      "index_status": "#/$defs/IndexStatusEvent",
+      "model_status": "#/$defs/ModelStatusEvent",
+      "orb_state": "#/$defs/OrbStateEvent",
+      "ping": "#/$defs/Ping",
+      "route": "#/$defs/RouteEvent",
+      "session_state": "#/$defs/SessionStateEvent",
+      "sources": "#/$defs/SourcesEvent",
+      "tool_end": "#/$defs/ToolEndEvent",
+      "tool_start": "#/$defs/ToolStartEvent",
+      "transcript_final": "#/$defs/TranscriptFinalEvent",
+      "transcript_partial": "#/$defs/TranscriptPartialEvent"
+    },
+    "propertyName": "t"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/SessionStateEvent"
+    },
+    {
+      "$ref": "#/$defs/OrbStateEvent"
+    },
+    {
+      "$ref": "#/$defs/RouteEvent"
+    },
+    {
+      "$ref": "#/$defs/TranscriptPartialEvent"
+    },
+    {
+      "$ref": "#/$defs/TranscriptFinalEvent"
+    },
+    {
+      "$ref": "#/$defs/AssistantDeltaEvent"
+    },
+    {
+      "$ref": "#/$defs/AssistantDoneEvent"
+    },
+    {
+      "$ref": "#/$defs/ToolStartEvent"
+    },
+    {
+      "$ref": "#/$defs/ToolEndEvent"
+    },
+    {
+      "$ref": "#/$defs/SourcesEvent"
+    },
+    {
+      "$ref": "#/$defs/ConfirmRequestEvent"
+    },
+    {
+      "$ref": "#/$defs/ModelStatusEvent"
+    },
+    {
+      "$ref": "#/$defs/IndexStatusEvent"
+    },
+    {
+      "$ref": "#/$defs/ErrorEvent"
+    },
+    {
+      "$ref": "#/$defs/Ping"
+    }
+  ]
+}

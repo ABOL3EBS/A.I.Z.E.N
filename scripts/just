@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Minimal `just` shim for machines without the `just` binary.
+
+Delegates to the real `just` when it is installed; otherwise parses the repo
+`justfile` (the subset we use: ``KEY := value`` assignments and ``name:`` recipes
+with tab-indented bodies) and runs the requested recipe. This keeps the task
+runner usable on a fresh checkout / CI without adding a system dependency.
+
+Usage: scripts/just [recipe]        # or: scripts/just --list
+"""
+
+from __future__ import annotations
+
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+from shutil import which
+
+ROOT = Path(__file__).resolve().parents[1]
+JUSTFILE = ROOT / "justfile"
+
+_ASSIGN_RX = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*)\s*:=\s*(.*)$")
+_RECIPE_RX = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*)\s*:.*$")
+_PLACEHOLDER_RX = re.compile(r"\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}")
+
+
+def _parse() -> tuple[dict[str, str], dict[str, list[str]]]:
+    assignments: dict[str, str] = {}
+    recipes: dict[str, list[str]] = {}
+    current: str | None = None
+    for raw in JUSTFILE.read_text(encoding="utf-8").splitlines():
+        if raw.startswith("\t") and current is not None:
+            recipes[current].append(raw[1:])
+            continue
+        current = None
+        stripped = raw.strip()
+        if not stripped or stripped.startswith("#") or stripped.startswith("set "):
+            continue
+        assignment = _ASSIGN_RX.match(stripped)
+        if assignment:
+            key, value = assignment.group(1), assignment.group(2).strip()
+            if value.startswith("`") and value.endswith("`"):
+                value = subprocess.run(
+                    value[1:-1], shell=True, cwd=ROOT, capture_output=True, text=True
+                ).stdout.strip()
+            assignments[key] = value
+            continue
+        recipe = _RECIPE_RX.match(stripped)
+        if recipe:
+            current = recipe.group(1)
+            recipes[current] = []
+    return assignments, recipes
+
+
+def _render(line: str, assignments: dict[str, str]) -> str:
+    return _PLACEHOLDER_RX.sub(lambda m: assignments.get(m.group(1), m.group(0)), line)
+
+
+def main(argv: list[str]) -> int:
+    real = which("just")
+    if real:
+        os.execv(real, [real, *argv])
+
+    assignments, recipes = _parse()
+    if not argv or argv[0] in ("--list", "-l"):
+        for name in recipes:
+            print(name)
+        return 0
+
+    name, *extra = argv
+    if name not in recipes:
+        print(f"just: unknown recipe {name!r}", file=sys.stderr)
+        print("available: " + ", ".join(recipes), file=sys.stderr)
+        return 2
+
+    for line in recipes[name]:
+        command = _render(line, assignments)
+        print(f"+ {command}", file=sys.stderr)
+        code = subprocess.run(command, shell=True, cwd=ROOT).returncode
+        if code != 0:
+            return code
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

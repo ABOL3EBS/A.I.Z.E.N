@@ -38,6 +38,14 @@ fix:
 type:
 	{{PY}} pyright
 
+# Typecheck (alias used by AGENTS.md)
+typecheck:
+	{{PY}} pyright
+
+# Generate shared protocol JSON Schema + TS types
+gen-types:
+	{{PY}} python scripts/gen_types.py
+
 # Run the eval/model gate suite
 eval:
 	{{PY}} pytest core/tests/evals -q
@@ -46,8 +54,12 @@ eval:
 serve:
 	{{PY}} python -m aizen.api
 
+# Start the full dev environment (core API; UI joins in a later phase)
+dev:
+	{{PY}} python -m aizen.api
+
 # Run the model gate battery against a running Ollama
 model-gate:
 	{{PY}} python -m aizen.evals.model_gate --profile light
 
-.PHONY: setup lock test test-cov lint fmt fix type eval serve model-gate
+.PHONY: setup lock test test-cov lint fmt fix type eval serve model-gate gen-types

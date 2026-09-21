@@ -1,0 +1,115 @@
+{
+  "$defs": {
+    "Claim": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ClaimKind"
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Currency"
+        },
+        "matched_fact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Matched Fact Id"
+        },
+        "exempt": {
+          "default": false,
+          "title": "Exempt",
+          "type": "boolean"
+        },
+        "exempt_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exempt Reason"
+        }
+      },
+      "required": [
+        "text",
+        "value",
+        "kind"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "ClaimKind": {
+      "enum": [
+        "money",
+        "number",
+        "percent",
+        "count",
+        "date"
+      ],
+      "title": "ClaimKind",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "ok": {
+      "title": "Ok",
+      "type": "boolean"
+    },
+    "claims": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "unmatched": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Unmatched",
+      "type": "array"
+    },
+    "regenerated": {
+      "default": false,
+      "title": "Regenerated",
+      "type": "boolean"
+    },
+    "fell_back": {
+      "default": false,
+      "title": "Fell Back",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "ok"
+  ],
+  "title": "VerifyResult",
+  "type": "object"
+}

@@ -1,0 +1,227 @@
+{
+  "$defs": {
+    "CancelTurn": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "cancel_turn",
+          "title": "T",
+          "type": "string"
+        },
+        "turnId": {
+          "default": "",
+          "title": "Turnid",
+          "type": "string"
+        }
+      },
+      "title": "CancelTurn",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "ConfirmResponseEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "confirm_response",
+          "title": "T",
+          "type": "string"
+        },
+        "requestId": {
+          "title": "Requestid",
+          "type": "string"
+        },
+        "approve": {
+          "title": "Approve",
+          "type": "boolean"
+        },
+        "scope": {
+          "default": "once",
+          "enum": [
+            "once",
+            "session"
+          ],
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "requestId",
+        "approve",
+        "t"
+      ],
+      "title": "ConfirmResponseEvent",
+      "type": "object"
+    },
+    "InterruptSpeech": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "interrupt_speech",
+          "title": "T",
+          "type": "string"
+        }
+      },
+      "title": "InterruptSpeech",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "Pong": {
+      "additionalProperties": false,
+      "description": "Transport heartbeat reply; not part of \u00a76.2's app-level events.",
+      "properties": {
+        "t": {
+          "const": "pong",
+          "title": "T",
+          "type": "string"
+        }
+      },
+      "title": "Pong",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "PrivateMode": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "private_mode",
+          "title": "T",
+          "type": "string"
+        },
+        "on": {
+          "title": "On",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "on",
+        "t"
+      ],
+      "title": "PrivateMode",
+      "type": "object"
+    },
+    "PttStart": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "ptt_start",
+          "title": "T",
+          "type": "string"
+        }
+      },
+      "title": "PttStart",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "PttStop": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "ptt_stop",
+          "title": "T",
+          "type": "string"
+        }
+      },
+      "title": "PttStop",
+      "type": "object",
+      "required": [
+        "t"
+      ]
+    },
+    "SetModel": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "set_model",
+          "title": "T",
+          "type": "string"
+        },
+        "profile": {
+          "title": "Profile",
+          "type": "string"
+        }
+      },
+      "required": [
+        "profile",
+        "t"
+      ],
+      "title": "SetModel",
+      "type": "object"
+    },
+    "UserText": {
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "const": "user_text",
+          "title": "T",
+          "type": "string"
+        },
+        "turnId": {
+          "default": "",
+          "title": "Turnid",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "t"
+      ],
+      "title": "UserText",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "cancel_turn": "#/$defs/CancelTurn",
+      "confirm_response": "#/$defs/ConfirmResponseEvent",
+      "interrupt_speech": "#/$defs/InterruptSpeech",
+      "pong": "#/$defs/Pong",
+      "private_mode": "#/$defs/PrivateMode",
+      "ptt_start": "#/$defs/PttStart",
+      "ptt_stop": "#/$defs/PttStop",
+      "set_model": "#/$defs/SetModel",
+      "user_text": "#/$defs/UserText"
+    },
+    "propertyName": "t"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/UserText"
+    },
+    {
+      "$ref": "#/$defs/PttStart"
+    },
+    {
+      "$ref": "#/$defs/PttStop"
+    },
+    {
+      "$ref": "#/$defs/InterruptSpeech"
+    },
+    {
+      "$ref": "#/$defs/CancelTurn"
+    },
+    {
+      "$ref": "#/$defs/ConfirmResponseEvent"
+    },
+    {
+      "$ref": "#/$defs/SetModel"
+    },
+    {
+      "$ref": "#/$defs/PrivateMode"
+    },
+    {
+      "$ref": "#/$defs/Pong"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "t": {
+      "const": "error",
+      "title": "T",
+      "type": "string"
+    },
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "recoverable": {
+      "default": true,
+      "title": "Recoverable",
+      "type": "boolean"
+    },
+    "hint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Hint"
+    }
+  },
+  "required": [
+    "code",
+    "message",
+    "t"
+  ],
+  "title": "ErrorEvent",
+  "type": "object"
+}

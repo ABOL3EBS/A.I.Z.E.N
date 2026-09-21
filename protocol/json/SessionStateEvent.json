@@ -1,0 +1,37 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "t": {
+      "const": "session_state",
+      "title": "T",
+      "type": "string"
+    },
+    "state": {
+      "title": "State",
+      "type": "string"
+    },
+    "seq": {
+      "title": "Seq",
+      "type": "integer"
+    },
+    "detail": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Detail"
+    }
+  },
+  "required": [
+    "state",
+    "seq",
+    "t"
+  ],
+  "title": "SessionStateEvent",
+  "type": "object"
+}
